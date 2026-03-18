@@ -3,7 +3,7 @@
 ---
 
 <header
-  class="py-6 flex items-center justify-between border-b w-full border-border-subtle/50"
+  class="sticky top-3 z-50 flex w-full items-center justify-between gap-6 rounded-xl border border-border-subtle/50 bg-bg-primary/80 px-4 py-4 backdrop-blur-md transition-all duration-300 md:px-6"
 >
   <div
     class="font-bold text-xl tracking-tighter cursor-pointer hover:text-brand-accent transition-colors"
@@ -15,11 +15,17 @@
     </a>
   </div>
 
-  <nav class="flex items-center gap-6 text-sm font-medium">
-    <a href="/#projects" class="text-text-muted hover:text-text-primary"
-      >Projectos</a
-    >
-    <a href="/#stack" class="text-text-muted hover:text-text-primary">Stack</a>
+  <nav class="ml-auto flex shrink-0 items-center gap-6 text-sm font-medium">
+    <a
+      href="/#projects"
+      data-section-link="projects"
+      class="text-text-muted hover:text-text-primary transition-colors"
+    >Projectos</a>
+    <a
+      href="/#stack"
+      data-section-link="stack"
+      class="text-text-muted hover:text-text-primary transition-colors"
+    >Stack</a>
 
     <div class="h-4 w-px bg-border-subtle mx-2 hidden sm:block"></div>
 

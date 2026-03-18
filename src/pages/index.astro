@@ -12,7 +12,7 @@ const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
   <Header slot="header" />
 
   <!-- HERO SECTION -->
-  <section class="min-h-[70vh] flex flex-col justify-center space-y-6 animate-fade-in-up">
+  <section id="home" class="min-h-[70vh] flex flex-col justify-center space-y-6 animate-fade-in-up">
     <div>
       <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
         Hola.<br />
@@ -143,3 +143,87 @@ const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
     }
   }
 </style>
+
+<script>
+  const sectionIds = ['stack', 'projects'];
+  let currentSection = window.location.hash.replace('#', '');
+
+  const linksBySection = new Map(
+    sectionIds.map((id) => [id, document.querySelector(`[data-section-link="${id}"]`)])
+  );
+  const ratiosBySection = new Map(sectionIds.map((id) => [id, 0]));
+
+  const updateNavState = (sectionId: string) => {
+    for (const [id, link] of linksBySection.entries()) {
+      if (!(link instanceof HTMLAnchorElement)) continue;
+
+      const isActive = id === sectionId;
+      link.classList.toggle('text-brand-accent', isActive);
+      link.classList.toggle('text-text-primary', isActive);
+      link.classList.toggle('text-text-muted', !isActive);
+
+      if (isActive) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    }
+  };
+
+  const updateSection = (nextSection: string) => {
+    if (nextSection === currentSection) return;
+
+    currentSection = nextSection;
+    updateNavState(nextSection);
+
+    if (!nextSection) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+      return;
+    }
+
+    history.replaceState(null, '', `#${nextSection}`);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        ratiosBySection.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+      }
+
+      if (window.scrollY < 120) {
+        updateSection('');
+        return;
+      }
+
+      let bestId = '';
+      let bestRatio = 0;
+
+      for (const id of sectionIds) {
+        const ratio = ratiosBySection.get(id) ?? 0;
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          bestId = id;
+        }
+      }
+
+      if (bestId && bestRatio >= 0.25) {
+        updateSection(bestId);
+      }
+    },
+    {
+      threshold: [0.25, 0.5, 0.75],
+      rootMargin: '-20% 0px -35% 0px',
+    }
+  );
+
+  for (const id of sectionIds) {
+    const section = document.getElementById(id);
+    if (section) observer.observe(section);
+  }
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < 120) updateSection('');
+  }, { passive: true });
+
+  if (!sectionIds.includes(currentSection)) {
+    currentSection = '';
+  }
+  updateNavState(currentSection);
+</script>
