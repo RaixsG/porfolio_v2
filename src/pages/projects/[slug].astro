@@ -22,7 +22,7 @@ const { Content } = await render(project);
   <article class="max-w-3xl mx-auto w-full pt-12 pb-24">
     <div class="mb-16 space-y-6 border-b border-border-subtle pb-12">
       <a href="/#projects" class="text-text-muted hover:text-brand-accent transition-colors font-mono text-sm inline-flex items-center gap-2 decoration-transparent mb-8">
-        <span>{'<-'}</span> Volver a Casos de Estudio
+        <span>{'<-'}</span> Volver a Proyectos
       </a>
       
       <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white">
@@ -44,9 +44,15 @@ const { Content } = await render(project);
       {(project.data.repoUrl || project.data.demoUrl) && (
         <div class="flex gap-4 pt-8">
           {project.data.repoUrl && (
-            <a href={project.data.repoUrl} target="_blank" rel="noopener noreferrer" class="px-6 py-3 border border-border-subtle hover:border-brand-accent hover:text-brand-accent transition-colors font-mono inline-flex items-center gap-2 decoration-transparent">
-              <span>{'>>'}</span> Repositorio
-            </a>
+            project.data.private ? (
+              <div class="px-6 py-3 border border-border-subtle text-text-muted cursor-not-allowed font-mono inline-flex items-center gap-2 opacity-60">
+                <span>🔒</span> Repo Privado
+              </div>
+            ) : (
+              <a href={project.data.repoUrl} target="_blank" rel="noopener noreferrer" class="px-6 py-3 border border-border-subtle hover:border-brand-accent hover:text-brand-accent transition-colors font-mono inline-flex items-center gap-2 decoration-transparent">
+                <span>{'>>'}</span> Repositorio
+              </a>
+            )
           )}
           {project.data.demoUrl && (
             <a href={project.data.demoUrl} target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-brand-accent text-bg-primary font-bold hover:bg-white transition-colors font-mono inline-flex items-center gap-2 decoration-transparent">

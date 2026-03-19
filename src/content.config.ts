@@ -8,6 +8,7 @@ const projectsCollection = defineCollection({
     title: z.string(),
     description: z.string(),
     tags: z.array(z.string()),
+    private: z.boolean().default(false),
     repoUrl: z.url().optional(),
     demoUrl: z.url().optional(),
     order: z.number().default(99),
