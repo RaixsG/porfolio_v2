@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "start" "pnpm dlx serve dist",
+    "start": "pnpm dlx serve dist",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
